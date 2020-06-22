@@ -73,10 +73,13 @@ d3.csv("assets/data/data.csv").then(function(CSVdata) {
     chartGroup.append("g")
         .call(leftAxis);
 
+    chartGroup.append("g")
+    .attr("class", "theCircles");
+
   //var circlesGroup = svg.selectAll("g theCircles").data(CSVdata).enter();
     // We append the circles for each row of data (or each state, in this case).
      // Create Circles
-    var circlesgroup = chartGroup.selectAll("g theCircles")
+    var circlesgroup = chartGroup.selectAll("g .theCircles")
     .data(CSVdata)
     .enter()
     .append("circle")
@@ -84,15 +87,17 @@ d3.csv("assets/data/data.csv").then(function(CSVdata) {
     .attr("cy", d => yLinearScale(d.smokes))
     .attr("r", "12")
     .attr("fill", "blue")
-    .attr("opacity", ".5")
+    .attr("opacity", ".4")
+
+    // console.log(circlesgroup);
     
-    var textgroup = chartGroup.selectAll("g theCircles")
+    var textgroup = chartGroup.selectAll("g .theCircles")
     .data(CSVdata)
     .enter()
     .append("text")
     .attr("dx", d => xLinearScale(d.poverty))
-    .attr("dy", d => yLinearScale(d.smokes))
-    .attr("font-size", 15)
+    .attr("dy", d => yLinearScale(d.smokes) + (12 / 2.5))
+    .attr("font-size", 12)
     .attr("class", "stateText")
     .text( function(d) {
       return d.abbr;
@@ -110,7 +115,7 @@ d3.csv("assets/data/data.csv").then(function(CSVdata) {
     chartGroup.call(toolTip);
 
     // Create event listener to display and hide the tooltip
-    textgroup.on("click", function(data){
+    textgroup.on("mouseover", function(data){
         toolTip.show(data, this);
     })
         // onmouseout event
